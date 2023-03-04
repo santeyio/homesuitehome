@@ -1,1 +1,3 @@
 local_settings.*
+*.sqlite3
+*.swp
