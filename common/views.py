@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
-from .serializers import AuthSerializer, HouseholdSerializer
+from .serializers import AuthSerializer, HouseholdSerializer, UserSelfSerializer
 from .models import Household
 
 class LoginView(KnoxLoginView):
@@ -32,3 +32,8 @@ class HouseholdViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 def check_if_logged_in(request):
     return Response({'success': True}, status=200)
+
+@api_view(['GET'])
+def get_self(request):
+    s = UserSelfSerializer(request.user)
+    return Response(s.data, status=200)

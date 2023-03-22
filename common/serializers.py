@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Household
+from .models import Household, User
 
 class AuthSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -28,3 +28,12 @@ class AuthSerializer(serializers.Serializer):
 class HouseholdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Household
+
+class UserSelfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+            'household',
+        ]

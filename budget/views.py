@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from common.models import User
 from .models import Expenditure, ExpenditureCategory, Beneficiary
-from .serializers import ExpenditureSerializer, ExpenditureCategorySerializer
+from .serializers import ExpenditureSerializer, ExpenditureCategorySerializer, BeneficiarySerializer
 from .exceptions import HouseholdException
 
 class ExpenditureViewSet(viewsets.ModelViewSet):
@@ -19,12 +19,47 @@ class ExpenditureViewSet(viewsets.ModelViewSet):
         if not household:
             raise HouseholdException
         qs = Expenditure.objects.filter(household=household)
-        s = ExpenditureSerializer(qs, many=True)
+        serializer = ExpenditureSerializer(qs, many=True)
         return Response(serializer.data)
+
+    def create(self, request):
+        user = request.user
+        household = user.household
+        data = request.data
+        data['household'] = household.id
+        data['user'] = user.id
+        print('---- data: ')
+        print(data)
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+        
 
 class ExpenditureCategoryViewSet(viewsets.ModelViewSet):
     queryset = ExpenditureCategory.objects.all()
     serializer_class = ExpenditureCategorySerializer
+
+    def list(self, request):
+        household = request.user.household
+        if not household:
+            raise HouseholdException
+        qs = ExpenditureCategory.objects.filter(household=household)
+        serializer = ExpenditureCategorySerializer(qs, many=True)
+        return Response(serializer.data)
+
+class BeneficiaryViewSet(viewsets.ModelViewSet):
+    queryset = Beneficiary.objects.all()
+    serializer_class = BeneficiarySerializer
+
+    def list(self, request):
+        household = request.user.household
+        if not household:
+            raise HouseholdException
+        qs = Beneficiary.objects.filter(household=household)
+        serializer = BeneficiarySerializer(qs, many=True)
+        return Response(serializer.data)
 
 
 class LoadTestData():

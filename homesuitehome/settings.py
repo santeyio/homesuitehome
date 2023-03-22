@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 AUTH_USER_MODEL = 'common.User'
 
 # Quick-start development settings - unsuitable for production
@@ -29,13 +28,16 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_standardized_errors',
     'rest_framework',
+    'channels',
     'corsheaders',
     'knox',
     'common',
@@ -73,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'homesuitehome.wsgi.application'
 
+ASGI_APPLICATION = 'homesuitehome.asgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -119,6 +122,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'knox.auth.TokenAuthentication',
     ),
+    'EXCEPTION_HANDLER': 'drf_standardized_errors.handler.exception_handler',
 }
 
 # import sensitive keys that should not be stored in version control

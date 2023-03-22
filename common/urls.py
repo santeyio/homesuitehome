@@ -14,4 +14,5 @@ urlpatterns = [
         path('logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
         path('check/', views.check_if_logged_in, name='check_if_logged_in'),
     ])),
+    path('self/', views.get_self, name='get_self'),
 ]
