@@ -23,10 +23,7 @@ class ExpenditureConsumer(JsonWebsocketConsumer):
 
     @require_auth
     def receive_json(self, content):
-        content['wat'] = 'hahahahaha'
         self.send_json(content)
 
     def expenditure_added(self, event):
-        print('--------------- woo?')
-        print(event)
         self.send_json(event['content'])
