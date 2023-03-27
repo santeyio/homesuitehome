@@ -28,8 +28,6 @@ class ExpenditureViewSet(viewsets.ModelViewSet):
         data = request.data
         data['household'] = household.id
         data['user'] = user.id
-        print('---- data: ')
-        print(data)
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()
