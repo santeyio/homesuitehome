@@ -47,6 +47,14 @@ class ExpenditureCategoryViewSet(viewsets.ModelViewSet):
         serializer = ExpenditureCategorySerializer(qs, many=True)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print('--------- serializer:')
+            print(serializer.validated_data)
+            user = request.user
+
+
 class BeneficiaryViewSet(viewsets.ModelViewSet):
     queryset = Beneficiary.objects.all()
     serializer_class = BeneficiarySerializer

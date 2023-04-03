@@ -5,6 +5,7 @@ class ExpenditureCategory(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    last_updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='last_updated_by')
     household = models.ForeignKey(Household, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
