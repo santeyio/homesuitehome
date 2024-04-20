@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'knox',
     'common',
     'expenses',
+    'kitchen',
 ]
 
 MIDDLEWARE = [

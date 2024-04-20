@@ -29,7 +29,7 @@ class ExpenditureViewSet(viewsets.ModelViewSet):
         data['household'] = household.id
         data['user'] = user.id
         serializer = self.serializer_class(data=data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
@@ -48,11 +48,13 @@ class ExpenditureCategoryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            print('--------- serializer:')
-            print(serializer.validated_data)
-            user = request.user
+        user = request.user
+        category = ExpenditureCategory.objects.get(pk=pk)
+        serializer = self.serializer_class(category, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.update()
+            return Response(serializer.data)
+        return Response({'error', True}, status=404)
 
 
 class BeneficiaryViewSet(viewsets.ModelViewSet):

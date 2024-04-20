@@ -17,6 +17,7 @@ class ExpenditureCategorySerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [ 'id', 'created_by', 'last_updated_by' ]
 
+
 class ExpenditureSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=ExpenditureCategory.objects.all())
     household = serializers.PrimaryKeyRelatedField(queryset=Household.objects.all())
