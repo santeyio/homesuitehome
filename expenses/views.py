@@ -47,12 +47,18 @@ class ExpenditureCategoryViewSet(viewsets.ModelViewSet):
         serializer = ExpenditureCategorySerializer(qs, many=True)
         return Response(serializer.data)
 
+    def create(self, request):
+        user = request.user
+        household = user.household
+
+
     def update(self, request, pk):
         user = request.user
         category = ExpenditureCategory.objects.get(pk=pk)
+        category.last_updated_by = user
         serializer = self.serializer_class(category, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
-            serializer.update()
+            serializer.update(category, serializer.validated_data)
             return Response(serializer.data)
         return Response({'error', True}, status=404)
 
@@ -68,6 +74,15 @@ class BeneficiaryViewSet(viewsets.ModelViewSet):
         qs = Beneficiary.objects.filter(household=household)
         serializer = BeneficiarySerializer(qs, many=True)
         return Response(serializer.data)
+
+    def update(self, request, pk):
+        user = request.user
+        beneficiary = Beneficiary.objects.filter(pk=pk)
+        serializer = self.serializer_class(beneficiary, data=request.data, parital=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.update(beneficiary, serializer.validated_data)
+            return Response(serializer.data)
+        return Response({'error', True}, status=404)
 
 
 class LoadTestData():
